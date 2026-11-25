@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="card">
+    <view class="row between">
+      <view>
+        <view style="font-size:34rpx;font-weight:800">拼豆图纸</view>
+        <view class="faint">{{work.size}} 格 · {{work.total}} 颗豆 · {{work.colors}} 色</view>
+      </view>
+      <view class="badge">MARD 291</view>
+    </view>
+    <view class="divider"></view>
+    <view class="canvas-scroll">
+      <canvas type="2d" id="patternCanvas" class="pattern-canvas" style="width:{{canvasW}}px;height:{{canvasH}}px"></canvas>
+    </view>
+    <view class="canvas-hint">双指缩放 · 拖动查看；色号标注在放大后显示</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">用料清单</view>
+    <view class="stats-row">
+      <view class="stat"><view class="stat-num">{{work.total}}</view><view class="faint">总豆数</view></view>
+      <view class="stat"><view class="stat-num">{{work.colors}}</view><view class="faint">颜色种数</view></view>
+      <view class="stat"><view class="stat-num">{{physicalSize}}</view><view class="faint">成品尺寸</view></view>
+    </view>
+    <view class="divider"></view>
+    <view class="material-list">
+      <view class="material-item" wx:for="{{materials}}" wx:key="id">
+        <view class="swatch" style="background:{{item.hex}}"></view>
+        <view class="mat-info">
+          <view class="mat-id">{{item.id}}</view>
+          <view class="faint">{{item.name}}</view>
+        </view>
+        <view class="mat-qty">{{item.n}} 颗</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <view class="btn btn-ghost" bindtap="previewHD">预览图纸</view>
+    <view class="btn btn-primary" bindtap="saveToAlbum">保存到相册</view>
+  </view>
+</view>

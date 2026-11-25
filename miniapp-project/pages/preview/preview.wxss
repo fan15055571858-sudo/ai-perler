@@ -1,0 +1,16 @@
+.badge { padding: 8rpx 18rpx; background: var(--primary-soft); color: var(--primary); border-radius: 999rpx; font-size: 22rpx; font-weight: 800; }
+.canvas-scroll { width: 100%; overflow: auto; background: var(--surface-2); border-radius: 12rpx; padding: 12rpx; }
+.pattern-canvas { background: #fff; }
+.canvas-hint { text-align: center; font-size: 20rpx; color: var(--faint); margin-top: 14rpx; }
+.stats-row { display: flex; }
+.stat { flex: 1; text-align: center; border-right: 1rpx solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat-num { font-size: 36rpx; font-weight: 800; color: var(--text); }
+.material-list { max-height: 600rpx; overflow-y: auto; }
+.material-item { display: flex; align-items: center; gap: 18rpx; padding: 12rpx 4rpx; border-bottom: 1rpx solid var(--border); }
+.swatch { width: 48rpx; height: 48rpx; border-radius: 8rpx; border: 1rpx solid rgba(0,0,0,.12); flex-shrink: 0; }
+.mat-info { flex: 1; min-width: 0; }
+.mat-id { font-weight: 700; font-size: 25rpx; }
+.mat-qty { font-size: 24rpx; color: var(--dim); font-weight: 700; }
+.action-bar { display: flex; gap: 16rpx; padding: 16rpx 0 40rpx; }
+.action-bar .btn { flex: 1; }

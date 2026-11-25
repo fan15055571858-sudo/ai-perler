@@ -1,0 +1,108 @@
+<view class="page">
+  <!-- 头部 -->
+  <view class="hero">
+    <view class="hero-title">AI 拼豆工作台</view>
+    <view class="hero-sub">上传图片，一键生成能拼出来的图纸</view>
+    <view class="quota-row">
+      <view class="quota-chip"><view class="dot green"></view>拼豆 {{quota.beads}}</view>
+      <view class="quota-chip"><view class="dot purple"></view>AI {{quota.ai}}</view>
+      <view class="spacer"></view>
+      <view class="quota-chip outline">本地处理 · 不上传</view>
+    </view>
+  </view>
+
+  <!-- 上传 -->
+  <view class="card">
+    <view class="section-title"><view class="step-num">1</view>上传图片</view>
+    <view class="upload-zone" bindtap="chooseImage" wx:if="{{!sourcePath}}">
+      <view class="upload-icon">
+        <view class="up-arrow"></view>
+        <view class="up-tray"></view>
+      </view>
+      <view class="upload-title">点击上传图片</view>
+      <view class="faint">支持 JPG / PNG / WEBP · 最大 20MB</view>
+    </view>
+    <view class="source-preview" wx:else>
+      <image class="source-img" src="{{sourcePath}}" mode="aspectFill"></image>
+      <view class="source-info">
+        <view class="source-name">{{sourceName}}</view>
+        <view class="faint">{{sourceW}} × {{sourceH}} 像素</view>
+      </view>
+      <view class="change-btn" bindtap="chooseImage">更换</view>
+    </view>
+  </view>
+
+  <!-- AI 风格 -->
+  <view class="card" wx:if="{{sourcePath}}">
+    <view class="section-title"><view class="step-num">2</view>AI 风格转换 <view class="tag-ai">可选</view></view>
+    <view class="style-grid">
+      <view wx:for="{{styles}}" wx:key="key" class="style-card {{item.key === style ? 'active' : ''}}" data-key="{{item.key}}" bindtap="onStyleTap">
+        <view class="style-name">{{item.name}}</view>
+        <view class="style-desc">{{item.desc}}</view>
+      </view>
+    </view>
+    <view class="btn btn-ai ai-btn {{generatingAI ? 'btn-disabled' : ''}}" bindtap="onAIGen">
+      {{generatingAI ? '生成中…' : '生成风格图 · 消耗 1 次 AI'}}
+    </view>
+    <view class="faint" style="margin-top:16rpx" wx:if="{{aiResults.length > 0}}">已生成 {{aiResults.length}} 个风格结果，点击上方缩略图切换素材</view>
+    <scroll-view scroll-x class="material-strip" wx:if="{{aiResults.length > 0}}">
+      <view class="strip-item {{activeMaterial === 0 ? 'on' : ''}}" data-index="0" bindtap="onMaterialTap">
+        <image src="{{sourcePath}}" mode="aspectFill"></image><text>原图</text>
+      </view>
+      <view wx:for="{{aiResults}}" wx:key="path" class="strip-item {{activeMaterial === index + 1 ? 'on' : ''}}" data-index="{{index + 1}}" bindtap="onMaterialTap">
+        <image src="{{item.path}}" mode="aspectFill"></image><text>AI{{index + 1}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 拼豆参数 -->
+  <view class="card">
+    <view class="section-title"><view class="step-num">3</view>拼豆参数</view>
+    <view class="field">
+      <view class="field-label">图纸尺寸（格）</view>
+      <view class="preset-grid">
+        <view wx:for="{{presets}}" wx:key="*this" class="preset {{item === presetW ? 'active' : ''}}" data-size="{{item}}" bindtap="onPresetTap">{{item}}×{{item}}</view>
+      </view>
+      <view class="custom-size">
+        <input class="size-input" type="number" value="{{customW}}" bindinput="onCustomW" placeholder="宽"></input>
+        <text class="x-mark">×</text>
+        <input class="size-input" type="number" value="{{customH}}" bindinput="onCustomH" placeholder="高"></input>
+        <view class="lock-label">自定义</view>
+      </view>
+    </view>
+    <view class="field">
+      <view class="field-label">最大颜色数 <text class="field-value">{{maxColors}}</text></view>
+      <slider min="2" max="120" value="{{maxColors}}" bindchanging="onColorsChange" bindchange="onColorsChange" activeColor="#e68a5c" block-color="#e68a5c"></slider>
+    </view>
+    <view class="field">
+      <view class="field-label">色系筛选</view>
+      <view class="chip-row">
+        <view wx:for="{{series}}" wx:key="key" class="chip {{item.active ? 'active' : ''}}" data-key="{{item.key}}" bindtap="onSeriesTap">{{item.name}} {{item.count}}</view>
+      </view>
+    </view>
+    <view class="field">
+      <view class="field-label">转换模式</view>
+      <view class="seg-row">
+        <view wx:for="{{dithers}}" wx:key="key" class="seg {{item.key === dither ? 'active' : ''}}" data-key="{{item.key}}" bindtap="onDitherTap">{{item.name}}</view>
+      </view>
+    </view>
+    <view class="btn btn-primary gen-btn {{!sourcePath || generating ? 'btn-disabled' : ''}}" bindtap="onGenerate">
+      {{generating ? '生成中…' : '生成拼豆图纸'}}
+    </view>
+    <view class="faint" style="margin-top:14rpx;text-align:center">拼豆次数为 0 时仍可免费生成预览图纸</view>
+  </view>
+
+  <!-- 最近作品入口 -->
+  <view class="card recent" bindtap="goWorks" wx:if="{{recentWork}}">
+    <view class="section-title" style="margin-bottom:12rpx">最近作品</view>
+    <view class="row gap12">
+      <image class="recent-thumb" src="{{recentWork.thumb}}" mode="aspectFill"></image>
+      <view>
+        <view style="font-weight:700">{{recentWork.name}}</view>
+        <view class="faint">{{recentWork.size}} · {{recentWork.total}} 颗豆</view>
+      </view>
+      <view class="spacer"></view>
+      <view class="muted">查看 →</view>
+    </view>
+  </view>
+</view>

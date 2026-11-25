@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/preview/preview",
+    "pages/works/works"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#fdfbf7",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "AI 拼豆工作台",
+    "backgroundColor": "#fdfbf7",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#9ca3af",
+    "selectedColor": "#e68a5c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "创作" },
+      { "pagePath": "pages/preview/preview", "text": "图纸" },
+      { "pagePath": "pages/works/works", "text": "作品" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
