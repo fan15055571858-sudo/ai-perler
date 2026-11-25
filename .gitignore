@@ -1,0 +1,11 @@
+# 浏览器自动化临时缓存
+verify/cdp-profile/
+verify/cdp-profile2/
+
+# 本地服务器进程文件
+server.pid
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.log
